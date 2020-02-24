@@ -10,30 +10,30 @@ import uuid
 #ce sont les fichiers a remplir avec le dictionnaire
 
 
-# FILES=[
-# 'configs/core/cytomineconfig.groovy', 
-# 'configs/ims/ims-config.groovy',
-# 'configs/iipCyto/nginx.conf.sample',
-# 'configs/iipCyto/iip-configuration.sh', 
-# 'configs/iipJP2/nginx.conf.sample', 
-# 'configs/iris/iris-config.groovy',
-# 'configs/iris/iris-production-config.groovy',
-# 'configs/nginx/nginx.conf' ,
-# 'configs/nginx/server-core.conf' ,
-# 'configs/nginx/server-iipjp2.conf ',
-# 'configs/nginx/server-ims.conf ',
-# 'configs/nginx/server-iris.conf ',
-# 'configs/nginx/server-retrieval.conf ',
-# 'configs/software_router/config.groovy ',
-# 'configs/web-ui/configuration.json ',
-# 'utils/start.sh hosts/core/addHosts.sh ',
-# 'hosts/ims/addHosts.sh ',
-# 'hosts/retrieval/addHosts.sh ',
-# 'hosts/iris/addHosts.sh ',
-# 'hosts/software_router/addHosts.sh ',
-# 'hosts/slurm/addHosts.sh', 
-# 'hosts/project_migrator/addHosts.sh',
-# ' docker-compose.yml']
+FILES=[
+'configs/core/cytomineconfig.groovy', 
+'configs/ims/ims-config.groovy',
+'configs/iipCyto/nginx.conf.sample',
+'configs/iipCyto/iip-configuration.sh', 
+'configs/iipJP2/nginx.conf.sample', 
+'configs/iris/iris-config.groovy',
+'configs/iris/iris-production-config.groovy',
+'configs/nginx/nginx.conf' ,
+'configs/nginx/server-core.conf' ,
+'configs/nginx/server-iipjp2.conf ',
+'configs/nginx/server-ims.conf ',
+'configs/nginx/server-iris.conf ',
+'configs/nginx/server-retrieval.conf ',
+'configs/software_router/config.groovy ',
+'configs/web-ui/configuration.json ',
+'utils/start.sh hosts/core/addHosts.sh ',
+'hosts/ims/addHosts.sh ',
+'hosts/retrieval/addHosts.sh ',
+'hosts/iris/addHosts.sh ',
+'hosts/software_router/addHosts.sh ',
+'hosts/slurm/addHosts.sh', 
+'hosts/project_migrator/addHosts.sh',
+'docker-compose.yml']
 
 #meme liste qu'avant + le docker-compose qu'il faut remplir a la place du start
 
@@ -47,7 +47,7 @@ import uuid
 # ------------------------------------------------
 
 KEY= 'Key.yml.sample'
-FILES=['coucou.conf', 'cirque.yml', 'docker-compose.yml']
+#FILES=['coucou.conf', 'cirque.yml', 'docker-compose.yml']
 LISTDICT=['configurationBase.yml', 'version.yml', KEY]
 
 

@@ -26,7 +26,8 @@ services:
 
   postgresql:
     container_name: postgresql
-    image: $POSTGRESQL_NAMESPACE/postgres:$POSTGRESQL_VERSION postgres
+    image: $POSTGRESQL_NAMESPACE/postgres:$POSTGRESQL_VERSION 
+
     restart: unless-stopped
     volumes: 
       - "$POSTGRESQL_VOLUME:/var/lib/postgresql/data"
@@ -35,7 +36,7 @@ services:
     environment:
       - PGDATA=/var/lib/postgresql/data/db-files/
     entrypoint:
-      - config_file=/tmp/postgresql.conf #c'est pa sur sur les gars!!! traduction du -c pour l'image
+      - '/tmp/postgresql.conf' #c'est pa sur sur les gars!!! traduction du -c pour l'image
     # networks:
     #   - network_core
 
@@ -67,8 +68,8 @@ services:
     # networks:
     #   - network_core
 
-  backup_mongodb:
-    container_name: backup_mongodb
+  backup_mongo:
+    container_name: backup_mongo
     image: $BACKUP_NAMESPACE/backup:$BACKUP_VERSION 
     restart: unless-stopped
     links: 
@@ -124,14 +125,15 @@ services:
     volumes:
       - "$IMS_STORAGE_PATH:$IMS_STORAGE_PATH"
     environment:
-      - BIOFORMAT_PORT=$BIOFORMAT_PORT
+      - BIOFORMAT_PORT=4321
+
 
   ims:
     container_name: ims
     image: $IMS_NAMESPACE/ims:$IMS_VERSION 
     restart: unless-stopped
     volumes:
-      - "$IMS_STORAGE_PATH:$IMS_STORAGE_PATH"
+      #- "$IMS_STORAGE_PATH:$IMS_STORAGE_PATH"
       - "$IMS_BUFFER_PATH:/tmp/uploaded "
       - "$FAST_DATA_PATH:$FAST_DATA_PATH"
       - "${PWD}/configs/ims/imageserverconfig.properties:/usr/share/tomcat7/.grails/imageserverconfig.properties" #docker cp

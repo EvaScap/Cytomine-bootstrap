@@ -101,18 +101,18 @@
     # Advanced configuration.
     RABBITMQ_LOGIN: "router"
     RABBITMQ_PASSWORD: "router"
-    SLURM_VOLUME=: 'lurm_data'
+    SLURM_VOLUME: 'slurm_data'
 
 # #-------------------------------------------------------------------------------
 # # HTTPS FOR PUBLIC URLS
 # #-------------------------------------------------------------------------------
 
 # # Protocol for URLs accessible from outside (CORE_URL, IMS_URL, UPLOAD_URL, IRIS_URL)
-# HTTP_PROTOCOL=http # Accepted values: http, https
+    HTTP_PROTOCOL: 'http' # Accepted values: http, https
 # HTTP_PROXY=false
 
 # # Path where certificates are stored:
-# CERTIFICATE_PATH=/data/certificates  #que NGINX!!!!!!
+    CERTIFICATE_PATH: '/data/certificates'  #que NGINX!!!!!!
 
 # # To use HTTPS protocol, you need the following certificates in your CERTIFICATE_PATH
 # # - ${CORE_URL}.pem (ex: localhost-core.pem)
