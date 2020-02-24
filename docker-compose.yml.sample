@@ -1,0 +1,261 @@
+
+version: "3.5"
+
+services:
+
+  #var ok
+  memcached:
+    container_name: memcached
+    image: $MEMCACHED_NAMESPACE/memcached:$MEMCACHED_VERSION
+    restart: unless-stopped
+    volumes: 
+      - "${PWD}/configs/memcached/memcached.conf:/etc/memcached.conf"
+    # networks:
+    #   - network_image
+
+
+  rabbitmq:
+    container_name: rabbitmq
+    image: $RABBITMQ_NAMESPACE/rabbitmq:$RABBITMQ_VERSION
+    restart: unless-stopped
+    environment:
+      - RABBITMQ_PASS=$RABBITMQ_PASSWORD
+    # networks:
+    #   - network_core
+
+
+  postgresql:
+    container_name: postgresql
+    image: $POSTGRESQL_NAMESPACE/postgres:$POSTGRESQL_VERSION postgres
+    restart: unless-stopped
+    volumes: 
+      - "$POSTGRESQL_VOLUME:/var/lib/postgresql/data"
+      - "${PWD}/configs/postgresql/postgresql.conf:/tmp/postgresql.conf"
+     #il me faut une memory limit 8g
+    environment:
+      - PGDATA=/var/lib/postgresql/data/db-files/
+    entrypoint:
+      - config_file=/tmp/postgresql.conf #c'est pa sur sur les gars!!! traduction du -c pour l'image
+    # networks:
+    #   - network_core
+
+  backup_postgis:
+    container_name: backup_postgis
+    image: $BACKUP_NAMESPACE/backup:$BACKUP_VERSION 
+    restart: unless-stopped
+    volumes:
+      - "$BACKUP_PATH/postgis:/backup"
+    links:
+      - postgresql:db
+    environment:
+      - SENDER_EMAIL=$SENDER_EMAIL
+      - SENDER_EMAIL_PASS=$SENDER_EMAIL_PASS
+      - SENDER_EMAIL_SMTP_HOST=$SENDER_EMAIL_SMTP_HOST
+      - SENDER_EMAIL_SMTP_PORT=$SENDER_EMAIL_SMTP_PORT
+      - RECEIVER_EMAIL=$SENDER_EMAIL_SMTP_PORT 
+      - SGBD='postgres' 
+      - DATABASE='docker' 
+      - USER='docker' 
+      - PASSWD='docker'
+
+  mongodb:
+    container_name: mongodb
+    image: $MONGODB_NAMESPACE/mongodb:$MONGODB_VERSION
+    restart: unless-stopped
+    volumes: 
+      - "$MONGODB_VOLUME:/data/db"
+    # networks:
+    #   - network_core
+
+  backup_mongodb:
+    container_name: backup_mongodb
+    image: $BACKUP_NAMESPACE/backup:$BACKUP_VERSION 
+    restart: unless-stopped
+    links: 
+      - mongodb:db
+    volumes:
+      - "$BACKUP_PATH/mongo:/backup"
+    environment:
+      - SGBD='mongodb' 
+      - SENDER_EMAIL=$SENDER_EMAIL
+      - SENDER_EMAIL_PASS=$SENDER_EMAIL_PASS 
+      - ENDER_EMAIL_SMTP_HOST=$SENDER_EMAIL_SMTP_HOST
+      - SENDER_EMAIL_SMTP_PORT=$SENDER_EMAIL_SMTP_PORT 
+      - RECEIVER_EMAIL=$RECEIVER_EMAIL 
+
+
+  iipCyto:
+    container_name: iipCyto
+    image: $IIPCYTO_NAMESPACE/iip-cyto:$IIPCYTO_VERSION 
+    restart: unless-stopped
+    privileged: true
+    volumes: 
+      - "$IMS_STORAGE_PATH:$IMS_STORAGE_PATH"
+      - "${PWD}/configs/iipCyto/nginx.conf.sample:/tmp/nginx.conf.sample" 
+      - "${PWD}/configs/iipCyto/iip-configuration.sh:/tmp/iip-configuration.sh"
+    environment: 
+      - NB_IIP_PROCESS=$NB_IIP_PROCESS
+    links:
+      - memcached:memcached
+    # depends_on:
+    #   - memcached
+    # networks:
+    #   - network_http
+    #   - network_image
+
+
+  iipJP2:
+    container_name: iipJP2
+    image: $IIPJP2_NAMESPACE/iip-jp2000:$IIPJP2_VERSION 
+    restart: unless-stopped
+    privileged: true
+    volumes:
+      - "$IMS_STORAGE_PATH:$IMS_STORAGE_PATH"
+      - "${PWD}/configs/iipJP2/nginx.conf.sample:/tmp/nginx.conf.sample"
+    links:
+      - memcached:memcached 
+    environment:
+      - NB_IIP_PROCESS=$NB_IIP_PROCESS
+
+  bioformat:
+    container_name: bioformat
+    image: $BIOFORMAT_NAMESPACE/bioformat:$BIOFORMAT_VERSION
+    restart: unless-stopped
+    volumes:
+      - "$IMS_STORAGE_PATH:$IMS_STORAGE_PATH"
+    environment:
+      - BIOFORMAT_PORT=$BIOFORMAT_PORT
+
+  ims:
+    container_name: ims
+    image: $IMS_NAMESPACE/ims:$IMS_VERSION 
+    restart: unless-stopped
+    volumes:
+      - "$IMS_STORAGE_PATH:$IMS_STORAGE_PATH"
+      - "$IMS_BUFFER_PATH:/tmp/uploaded "
+      - "$FAST_DATA_PATH:$FAST_DATA_PATH"
+      - "${PWD}/configs/ims/imageserverconfig.properties:/usr/share/tomcat7/.grails/imageserverconfig.properties" #docker cp
+      - "${PWD}/hosts/ims/addHosts.sh:/tmp/addHosts.sh" 
+    environment:
+      - IMS_STORAGE_PATH=$IMS_STORAGE_PATH 
+      - FAST_DATA_PATH=$FAST_DATA_PATH
+    links:
+      - bioformat:bioformat
+    # depends_on:
+    #   - iipCyto
+    # networks:
+    #   - network_http
+    #   - network_image
+
+
+  core:
+    container_name: core
+    image:  $CORE_NAMESPACE/core:$CORE_VERSION
+    restart: unless-stopped
+    volumes: 
+      - "/etc/localtime:/etc/localtime"
+      - "${PWD}/configs/core/cytomineconfig.groovy:/usr/share/tomcat7/.grails/cytomineconfig.groovy"
+      - "${PWD}/hosts/core/addHosts.sh:/tmp/addHosts.sh"
+    links:
+      - postgresql:postgresql 
+      - mongodb:mongodb 
+      - rabbitmq:rabbitmq 
+    # depends_on:
+    #   - nginx
+    #   - mongodb
+    #   - postgresql
+
+    # networks:
+    #   - network_core
+    #   - network_http
+
+  webUI:
+    container_name: webUI
+    image: $WEB_UI_NAMESPACE/web-ui:$WEB_UI_VERSION 
+    restart: unless-stopped
+    volumes:
+      - "/etc/localtime:/etc/localtime"
+      - "${PWD}/configs/web-ui/configuration.json:/app/configuration.json"
+      - "${PWD}/configs/web-ui/nginx.conf:/etc/nginx/nginx.conf"
+
+
+  nginx:
+    container_name: nginx
+    image: $NGINX_NAMESPACE/nginx:$NGINX_VERSION
+    restart: unless-stopped
+    volumes: 
+      - "$IMS_BUFFER_PATH:/tmp/uploaded"
+      - "$CERTIFICATE_PATH:/certificates"
+      - "${PWD}/configs/nginx/nginx.conf:/usr/local/nginx/conf/nginx.conf"
+      - "${PWD}/configs/nginx/server-core.conf:/usr/local/nginx/conf/server-core.conf"
+      - "${PWD}/configs/nginx/server-ims.conf:/usr/local/nginx/conf/server-ims.conf"
+      - "${PWD}/configs/nginx/server-iipjp2.conf:/usr/local/nginx/conf/server-iipjp2.conf"
+
+    ports:
+      - "80:80"
+
+    links:
+      - ims:ims 
+      #- retrieval:retrieval 
+      - iipCyto:iipCyto 
+      - core:core 
+      - iipJP2:iipJP2 
+      - webUI:webUI
+      #- iris:iris
+    # networks:
+    #   - network_core
+    #   - network_http
+
+
+
+
+  slurm:
+    container_name: slurm
+    hostname: cytomine_slurm
+    image: $SLURM_NAMESPACE/slurm:$SLURM_VERSION
+    restart: unless-stopped
+    privileged: true
+    volumes:
+      - "$SLURM_VOLUME:/var/lib/mysql"
+      - "$SERVER_SSHKEYS_PATH:$SERVER_SSHKEYS_PATH"
+      - "$SOFTWARE_DOCKER_IMAGES_PATH:$SOFTWARE_DOCKER_IMAGES_PATH"
+      - "${PWD}/hosts/slurm/addHosts.sh:/tmp/addHosts.sh"
+    environment:
+      # A creer uniquement si n'existe pas (faudra faire un verif --> debut start)
+      - SERVER_SSHKEYS_FILE="/data/ssh/id_rsa"
+
+
+  software_router:
+    container_name: software_router
+    image: $SOFTWAREROUTER_NAMESPACE/software_router:$SOFTWAREROUTER_VERSION 
+    restart: unless-stopped
+    privileged: true
+    volumes:
+      - "$SOFTWARE_CODE_PATH:$SOFTWARE_CODE_PATH /code "
+      - "$SOFTWARE_DOCKER_IMAGES_PATH:$SOFTWARE_DOCKER_IMAGES_PATH"
+      - "$JOBS_PATH:$JOBS_PATH"
+      - "$SERVER_SSHKEYS_PATH:$SERVER_SSHKEYS_PATH"
+      - "${PWD}/hosts/software_router/addHosts.sh:/tmp/addHosts.sh"
+      - "${PWD}/configs/software_router/config.groovy:/opt/config.groovy"
+      - "${PWD}/configs/software_router/log4j.properties:/opt/log4j.properties"
+    links:
+      - rabbitmq:rabbitmq
+      - slurm:slurm 
+
+
+volumes:
+  $POSTGRESQL_VOLUME:
+  $MONGODB_VOLUME:
+  $SLURM_VOLUME:
+
+# networks:
+#   network_core:
+#     name: network_core
+#     #a partir de la v3.5
+#   network_image:
+#     name: network_image
+#   network_http:
+#     name: network_http
+
+
+
