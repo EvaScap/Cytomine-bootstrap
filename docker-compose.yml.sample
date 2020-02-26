@@ -35,8 +35,9 @@ services:
      #il me faut une memory limit 8g
     environment:
       - PGDATA=/var/lib/postgresql/data/db-files/
-    entrypoint:
-      - '/tmp/postgresql.conf' #c'est pa sur sur les gars!!! traduction du -c pour l'image
+    command: postgres -c 'config_file=/tmp/postgresql.conf'
+   # entrypoint:
+   #   - '/tmp/postgresql.conf' #c'est pa sur sur les gars!!! traduction du -c pour l'image
     # networks:
     #   - network_core
 

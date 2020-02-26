@@ -8,11 +8,11 @@ upstream backend-iip {
 
 server {
     listen 80;
-    listen 443 ssl http2;
+    #listen 443 ssl http2;
     server_name $IMS_URL;
 
-    ssl_certificate /certificates/$IMS_URL.pem;
-    ssl_certificate_key /certificates/$IMS_URL-key.pem;
+    #ssl_certificate /certificates/$IMS_URL.pem;
+    #ssl_certificate_key /certificates/$IMS_URL-key.pem;
 
     location / {
         add_header Access-Control-Allow-Origin *;
@@ -69,11 +69,11 @@ server {
 
 server {
     listen 80;
-    listen 443 ssl http2;
+   # listen 443 ssl http2;
     server_name  $UPLOAD_URL;
 
-    ssl_certificate /certificates/$UPLOAD_URL.pem;
-    ssl_certificate_key /certificates/$UPLOAD_URL-key.pem;
+   # ssl_certificate /certificates/$UPLOAD_URL.pem;
+   # ssl_certificate_key /certificates/$UPLOAD_URL-key.pem;
 
     location /upload {
         # No limit on uploaded file size.

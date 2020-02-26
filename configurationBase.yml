@@ -126,3 +126,32 @@
 
 # HTTP_NGINX_PORT=80
 # HTTPS_NGINX_PORT=443
+
+
+
+
+
+    POSTGRES_ALIAS: 'postgresql'
+    MONGODB_ALIAS: 'mongodb'
+    RABBITMQ_ALIAS: 'rabbitmq'
+    BIOFORMAT_ALIAS: 'bioformat'
+    CORE_ALIAS: 'core'
+    IMS_ALIAS: 'ims'
+    IMS_PORT: '8080'
+    WEB_UI_ALIAS: 'webUI'
+    WEB_UI_PORT: '80'
+
+
+    # POSTGRES_ALIAS: 'localhost'
+    # MONGODB_ALIAS: 'localhost'
+    # RABBITMQ_ALIAS: 'localhost'
+    # CORE_ALIAS: '172.17.0.1'
+
+    # BIOFORMAT_ALIAS: 'bioformat'
+    # IMS_ALIAS: '172.17.0.1'
+    # IMS_PORT: '9080'
+
+    # WEB_UI_ALIAS: '172.17.0.1'
+    # WEB_UI_PORT: '8081'
+
+    # BIOFORMAT_ALIAS: '172.17.0.1'
