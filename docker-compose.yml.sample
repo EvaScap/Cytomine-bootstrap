@@ -163,6 +163,7 @@ services:
       - postgresql:postgresql 
       - mongodb:mongodb 
       - rabbitmq:rabbitmq 
+    command: ["./wait-for-it.sh", "db:5432", "--", "python", "app.py"]
     # depends_on:
     #   - nginx
     #   - mongodb

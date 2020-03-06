@@ -48,7 +48,7 @@ FILES=[
 
 KEY= 'Key.yml.sample'
 #FILES=['coucou.conf', 'cirque.yml', 'docker-compose.yml']
-LISTDICT=['configurationBase.yml', 'version.yml', KEY]
+LISTDICT=['configurationBase.yml', 'version.yml', 'Key.yml']
 
 
 
@@ -80,6 +80,7 @@ def OpenAndSave(file):
 #replace the keys with their respective value in a file
 def replaceVar(dictFinal, fichier):
 	print(fichier +'TEEEEST')
+	print(dictFinal)
 	with open(fichier) as temp:
 		change = temp.read()
 		for key in dictFinal: 
