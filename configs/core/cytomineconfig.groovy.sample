@@ -29,7 +29,7 @@ storage_path='$IMS_STORAGE_PATH'
 fast_data_path='$FAST_DATA_PATH'
 
 //grails.iris.enabled=$IRIS_ENABLED
-//grails.retrieval.enabled=$RETRIEVAL_ENABLED
+grails.retrieval.enabled=false
 grails.backup.enabled=$BACKUP_ENABLED
 grails.bioformat.enabled=$BIOFORMAT_ENABLED
 grails.iipJP2.enabled=$IIP_JP2_ENABLED

@@ -1,7 +1,7 @@
 import os  
   
 print('STOP CONTAINERS')
-os.system('docker stop $(docker ps -a -q)') 
+os.system('docker-compose stop') 
 
 print('RM CONTAINERS')
-os.system('docker rm $(docker ps -a -q)') 
+os.system('docker-compose rm -f') 

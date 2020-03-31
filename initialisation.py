@@ -56,18 +56,6 @@ LISTDICT=['configurationBase.yml', 'version.yml', 'Key.yml']
 # -------------FONCTIONS-------------------
 # -----------------------------------------
 
-#saves a dict of dicts in env files. 
-#These files have a name equals to the name of  a key (that is one dict too) and contain the dict associated.
-def SaveDicoFileEnv(dico):
-    for key in dico:
-        print(key)
-        f=open(key+".env", "w+")
-        for key2 in dico[key]:
-            f.write(str(key2)+'='+str(dico[key][key2])+'\n')
-            print('\t'+str(key2)+'='+str(dico[key][key2]))
-        f.close()
-
-
 #opens the .yml file and saves it in a dictionary. 
 #Return this dict
 def OpenAndSave(file):
@@ -79,8 +67,6 @@ def OpenAndSave(file):
 
 #replace the keys with their respective value in a file
 def replaceVar(dictFinal, fichier):
-	print(fichier +'TEEEEST')
-	print(dictFinal)
 	with open(fichier) as temp:
 		change = temp.read()
 		for key in dictFinal: 
@@ -109,8 +95,6 @@ def GenerateKey(fileKey):
 	dictKey= OpenAndSave(fileKey)
 	for i in dictKey:
 		dictKey[i] = str(uuid.uuid4())
-		#dictKey[i]=dictKey[i].hex
-		print(dictKey[i])
 
 	with open(fileKey[:-7] , 'w') as file:
 		documents = yaml.dump(dictKey,file)
@@ -122,29 +106,23 @@ def GenerateKey(fileKey):
 # --------------------CREATION FINAL DICT-----------------------
 # ------------------------ + SAVE ------------------------------
 #---------------------------------------------------------------
-
+print("INITIALIZATION")
+print("Generating random keys")
 GenerateKey(KEY)
 
 dictFinal=CreateDict(LISTDICT) 
-
+print("Saving variables in the file configuration.env")
 with open('configuration.env' , 'w') as file:
-	documents = yaml.dump(dictFinal,file) #on pourrait le faire un peu plus propre --> a voir
+	documents = yaml.dump(dictFinal,file) 
 
 	
 
 # --------------------------------------------------------------
 # ---------------------LOOP TO REPLACE--------------------------
 # --------------------------------------------------------------
+print("Starting to generate the various files")
 for i in FILES:
-	print("'"+i+".sample'") 
 	if os.path.isfile(i+'.sample'):
-		print('je retire le sample du fichier')
-
-		#delete the file if it exists
-		# if os.path.isfile(i):
-		# 	os.remove(i)
-		#--> pas besoin pcq si il existe je l'ecrase juste après
-
 		#copy the .sample file to create a filled file without losing the .sample
 		shutil.copy(i+'.sample',i)
 		replaceVar(dictFinal,i)

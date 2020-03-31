@@ -36,7 +36,7 @@
 
 
   CORE_NAMESPACE: 'cytomineuliege'
-  CORE_VERSION: 'v2.0.0-rc.5'
+  CORE_VERSION: 'test123'
 
 
   WEB_UI_NAMESPACE: 'cytomineuliege'

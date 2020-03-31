@@ -4,6 +4,7 @@ version: "3.5"
 services:
 
   postgresql:
+    network_mode: bridge
     container_name: postgresql
     image: $POSTGRESQL_NAMESPACE/postgres:$POSTGRESQL_VERSION 
 
@@ -27,6 +28,7 @@ services:
 
   #var ok
   memcached:
+    network_mode: bridge
     container_name: memcached
     image: $MEMCACHED_NAMESPACE/memcached:$MEMCACHED_VERSION
     restart: unless-stopped
@@ -37,6 +39,7 @@ services:
 
 
   rabbitmq:
+    network_mode: bridge
     container_name: rabbitmq
     image: $RABBITMQ_NAMESPACE/rabbitmq:$RABBITMQ_VERSION
     restart: unless-stopped
@@ -49,6 +52,7 @@ services:
 
 
   backup_postgis:
+    network_mode: bridge
     container_name: backup_postgis
     image: $BACKUP_NAMESPACE/backup:$BACKUP_VERSION 
     restart: unless-stopped
@@ -68,6 +72,7 @@ services:
       - PASSWD='docker'
 
   mongodb:
+    network_mode: bridge  
     container_name: mongodb
     image: $MONGODB_NAMESPACE/mongodb:$MONGODB_VERSION
     restart: unless-stopped
@@ -77,6 +82,7 @@ services:
     #   - network_core
 
   backup_mongo:
+    network_mode: bridge
     container_name: backup_mongo
     image: $BACKUP_NAMESPACE/backup:$BACKUP_VERSION 
     restart: unless-stopped
@@ -94,6 +100,7 @@ services:
 
 
   iipCyto:
+    network_mode: bridge
     container_name: iipCyto
     image: $IIPCYTO_NAMESPACE/iip-cyto:$IIPCYTO_VERSION 
     restart: unless-stopped
@@ -101,7 +108,7 @@ services:
     volumes: 
       - "$IMS_STORAGE_PATH:$IMS_STORAGE_PATH"
       - "${PWD}/configs/iipCyto/nginx.conf.sample:/tmp/nginx.conf.sample" 
-      - "${PWD}/configs/iipCyto/iip-configuration.sh:/tmp/iip-configuration.sh"
+      - "${PWD}/configs/iipCyto/nginx.conf:/usr/local/nginx/conf/nginx.conf"
     environment: 
       - NB_IIP_PROCESS=$NB_IIP_PROCESS
     links:
@@ -114,19 +121,21 @@ services:
 
 
   iipJP2:
+    network_mode: bridge
     container_name: iipJP2
     image: $IIPJP2_NAMESPACE/iip-jp2000:$IIPJP2_VERSION 
     restart: unless-stopped
     privileged: true
     volumes:
       - "$IMS_STORAGE_PATH:$IMS_STORAGE_PATH"
-      - "${PWD}/configs/iipJP2/nginx.conf.sample:/tmp/nginx.conf.sample"
+      - "${PWD}/configs/iipJP2/nginx.conf:/usr/local/nginx/conf/nginx.conf"
     links:
       - memcached:memcached 
     environment:
       - NB_IIP_PROCESS=$NB_IIP_PROCESS
 
   bioformat:
+    network_mode: bridge
     container_name: bioformat
     image: $BIOFORMAT_NAMESPACE/bioformat:$BIOFORMAT_VERSION
     restart: unless-stopped
@@ -137,12 +146,13 @@ services:
 
 
   ims:
+    network_mode: bridge
     container_name: ims
     image: $IMS_NAMESPACE/ims:$IMS_VERSION 
     restart: unless-stopped
     volumes:
       #- "$IMS_STORAGE_PATH:$IMS_STORAGE_PATH"
-      - "$IMS_BUFFER_PATH:/tmp/uploaded "
+      - "$IMS_BUFFER_PATH:/tmp/uploaded"
       - "$FAST_DATA_PATH:$FAST_DATA_PATH"
       - "${PWD}/configs/ims/ims-config.groovy:/usr/share/tomcat7/.grails/ims-config.groovy" #docker cp
       - "${PWD}/hosts/ims/addHosts.sh:/tmp/addHosts.sh" 
@@ -159,6 +169,7 @@ services:
 
 
   core:
+    network_mode: bridge
     container_name: core
     image:  $CORE_NAMESPACE/core:$CORE_VERSION
     restart: unless-stopped
@@ -170,12 +181,12 @@ services:
       - postgresql:postgresql 
       - mongodb:mongodb 
       - rabbitmq:rabbitmq 
-    depends_on:
+    #depends_on:
     #   - nginx
     #   - mongodb
-      - postgresql
+    # - postgresql
 
-    command: ["./wait-for-postgres.sh", "postgresql:5432", "--", "python", "app.py"]
+
 
 
     # networks:
@@ -183,6 +194,7 @@ services:
     #   - network_http
 
   webUI:
+    network_mode: bridge
     container_name: webUI
     image: $WEB_UI_NAMESPACE/web-ui:$WEB_UI_VERSION 
     restart: unless-stopped
@@ -193,6 +205,7 @@ services:
 
 
   nginx:
+    network_mode: bridge
     container_name: nginx
     image: $NGINX_NAMESPACE/nginx:$NGINX_VERSION
     restart: unless-stopped
@@ -223,6 +236,7 @@ services:
 
 
   slurm:
+    network_mode: bridge
     container_name: slurm
     hostname: cytomine_slurm
     image: $SLURM_NAMESPACE/slurm:$SLURM_VERSION
@@ -239,6 +253,7 @@ services:
 
 
   software_router:
+    network_mode: bridge
     container_name: software_router
     image: $SOFTWAREROUTER_NAMESPACE/software_router:$SOFTWAREROUTER_VERSION 
     restart: unless-stopped
