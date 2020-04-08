@@ -5,9 +5,9 @@ import time
 FILES=[
 'configs/core/cytomineconfig.groovy', 
 'configs/ims/ims-config.groovy',
-'configs/iipCyto/nginx.conf.sample',
+'configs/iipCyto/nginx.conf',
 'configs/iipCyto/iip-configuration.sh', 
-'configs/iipJP2/nginx.conf.sample', 
+'configs/iipJP2/nginx.conf', 
 'configs/iris/iris-config.groovy',
 'configs/iris/iris-production-config.groovy',
 'configs/nginx/nginx.conf' ,

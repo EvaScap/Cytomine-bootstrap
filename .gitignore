@@ -2,8 +2,8 @@
 .idea/
 configs/core/cytomineconfig.groovy
 configs/iipCyto/iip-configuration.sh
-configs/iipCyto/nginx.conf.sample
-configs/iipJP2/nginx.conf.sample
+configs/iipCyto/nginx.conf
+configs/iipJP2/nginx.conf
 configs/ims/ims-config.groovy
 configs/iris/iris-config.groovy
 configs/iris/iris-production-config.groovy

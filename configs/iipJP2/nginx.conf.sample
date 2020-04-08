@@ -16,7 +16,7 @@ http {
 
 	upstream iip-up {
         	least_conn;
-IIP_PROCESS
+$IIP_PROCESS
 	}
 
 	server {

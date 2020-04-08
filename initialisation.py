@@ -13,9 +13,9 @@ import uuid
 FILES=[
 'configs/core/cytomineconfig.groovy', 
 'configs/ims/ims-config.groovy',
-'configs/iipCyto/nginx.conf.sample',
+'configs/iipCyto/nginx.conf',
 'configs/iipCyto/iip-configuration.sh', 
-'configs/iipJP2/nginx.conf.sample', 
+'configs/iipJP2/nginx.conf', 
 'configs/iris/iris-config.groovy',
 'configs/iris/iris-production-config.groovy',
 'configs/nginx/nginx.conf' ,
@@ -67,11 +67,15 @@ def OpenAndSave(file):
 
 #replace the keys with their respective value in a file
 def replaceVar(dictFinal, fichier):
+	string_server_list= ""
+	for i in range (0,int(dictFinal['NB_IIP_PROCESS'])):
+		string_server_list += '			server 127.0.0.1:900' +str(i) +';\n'
 	with open(fichier) as temp:
 		change = temp.read()
 		for key in dictFinal: 
 
 			change= re.sub('\\$'+key,dictFinal[key],change)
+		change=re.sub('\\$IIP_PROCESS',string_server_list,change)
 	temp.close()
 	with open(fichier, 'w') as temp:
 	    temp.write(change)
