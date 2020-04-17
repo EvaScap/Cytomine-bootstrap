@@ -1,13 +1,11 @@
 import json
-import yaml #pip3 install pyYaml
-from deepmerge import always_merger #pip3 install deepmerge
+import yaml 
+from deepmerge import always_merger 
 import re
 import os.path
 import shutil
 import uuid
 
-
-#ce sont les fichiers a remplir avec le dictionnaire
 
 
 FILES=[
@@ -35,11 +33,6 @@ FILES=[
 'hosts/project_migrator/addHosts.sh',
 'docker-compose.yml']
 
-#meme liste qu'avant + le docker-compose qu'il faut remplir a la place du start
-
-
-
-
 
 
 # ------------------------------------------------
@@ -47,7 +40,6 @@ FILES=[
 # ------------------------------------------------
 
 KEY= 'Key.yml.sample'
-#FILES=['coucou.conf', 'cirque.yml', 'docker-compose.yml']
 LISTDICT=['configurationBase.yml', 'version.yml', 'Key.yml']
 
 
@@ -64,8 +56,7 @@ def OpenAndSave(file):
     return(data_dict)
    
 
-
-#replace the keys with their respective value in a file
+#replaces the keys with their respective value in a file
 def replaceVar(dictFinal, fichier):
 	string_server_list= ""
 	for i in range (0,int(dictFinal['NB_IIP_PROCESS'])):
@@ -89,7 +80,7 @@ def CreateDict(LISTDICT):
 		if cmp==0:
 			dictFinal=dict1
 
-		dictFinal=always_merger.merge(dictFinal,dict1) #si on a qu'un dico il va merger deux les meme on s'en fout
+		dictFinal=always_merger.merge(dictFinal,dict1) 
 		cmp+=1
 	return dictFinal
 
@@ -127,7 +118,7 @@ with open('configuration.env' , 'w') as file:
 print("Starting to generate the various files")
 for i in FILES:
 	if os.path.isfile(i+'.sample'):
-		#copy the .sample file to create a filled file without losing the .sample
+		#copies the .sample file to create a filled file without losing the .sample
 		shutil.copy(i+'.sample',i)
 		replaceVar(dictFinal,i)
 		
