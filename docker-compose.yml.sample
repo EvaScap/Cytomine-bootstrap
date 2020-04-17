@@ -12,21 +12,11 @@ services:
     volumes: 
       - "$POSTGRESQL_VOLUME:/var/lib/postgresql/data"
       - "${PWD}/configs/postgresql/postgresql.conf:/tmp/postgresql.conf"
-     #il me faut une memory limit 8g
     environment:
       - PGDATA=/var/lib/postgresql/data/db-files/
     command: postgres -c 'config_file=/tmp/postgresql.conf'
-   # entrypoint:
-   #   - '/tmp/postgresql.conf' #c'est pa sur sur les gars!!! traduction du -c pour l'image
-    # networks:
-    #   - network_core
-    #healthcheck:
-    #  test: "pg_isready -h localhost -p 5432 -q -U postgres"
-    #  interval: 3s
-    #  timeout: 5s
-    #  retries: 5
+   
 
-  #var ok
   memcached:
     network_mode: bridge
     container_name: memcached
@@ -34,9 +24,7 @@ services:
     restart: unless-stopped
     volumes: 
       - "${PWD}/configs/memcached/memcached.conf:/etc/memcached.conf"
-    # networks:
-    #   - network_image
-
+  
 
   rabbitmq:
     network_mode: bridge
@@ -45,10 +33,6 @@ services:
     restart: unless-stopped
     environment:
       - RABBITMQ_PASS=$RABBITMQ_PASSWORD
-    # networks:
-    #   - network_core
-
-
 
 
   backup_postgis:
@@ -78,8 +62,7 @@ services:
     restart: unless-stopped
     volumes: 
       - "$MONGODB_VOLUME:/data/db"
-    # networks:
-    #   - network_core
+
 
   backup_mongo:
     network_mode: bridge
@@ -113,12 +96,7 @@ services:
       - NB_IIP_PROCESS=$NB_IIP_PROCESS
     links:
       - memcached:memcached
-    # depends_on:
-    #   - memcached
-    # networks:
-    #   - network_http
-    #   - network_image
-
+    
 
   iipJP2:
     network_mode: bridge
@@ -161,11 +139,6 @@ services:
       - FAST_DATA_PATH=$FAST_DATA_PATH
     links:
       - bioformat:bioformat
-    # depends_on:
-    #   - iipCyto
-    # networks:
-    #   - network_http
-    #   - network_image
 
 
   core:
@@ -181,17 +154,7 @@ services:
       - postgresql:postgresql 
       - mongodb:mongodb 
       - rabbitmq:rabbitmq 
-    #depends_on:
-    #   - nginx
-    #   - mongodb
-    # - postgresql
 
-
-
-
-    # networks:
-    #   - network_core
-    #   - network_http
 
   webUI:
     network_mode: bridge
@@ -222,17 +185,10 @@ services:
 
     links:
       - ims:ims 
-      #- retrieval:retrieval 
       - iipCyto:iipCyto 
       - core:core 
       - iipJP2:iipJP2 
       - webUI:webUI
-      #- iris:iris
-    # networks:
-    #   - network_core
-    #   - network_http
-
-
 
 
   slurm:
@@ -248,7 +204,6 @@ services:
       - "$SOFTWARE_DOCKER_IMAGES_PATH:$SOFTWARE_DOCKER_IMAGES_PATH"
       - "${PWD}/hosts/slurm/addHosts.sh:/tmp/addHosts.sh"
     environment:
-      # A creer uniquement si n'existe pas (faudra faire un verif --> debut start)
       - SERVER_SSHKEYS_FILE="/data/ssh/id_rsa"
 
 
@@ -276,14 +231,6 @@ volumes:
   $MONGODB_VOLUME:
   $SLURM_VOLUME:
 
-# networks:
-#   network_core:
-#     name: network_core
-#     #a partir de la v3.5
-#   network_image:
-#     name: network_image
-#   network_http:
-#     name: network_http
 
 
 
