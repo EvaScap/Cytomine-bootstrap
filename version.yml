@@ -36,7 +36,7 @@
 
 
   CORE_NAMESPACE: 'cytomineuliege'
-  CORE_VERSION: 'test123'
+  CORE_VERSION: 'dockercompose'
 
 
   WEB_UI_NAMESPACE: 'cytomineuliege'
