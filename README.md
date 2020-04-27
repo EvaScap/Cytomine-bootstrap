@@ -11,23 +11,36 @@
 [Cytomine](http://cytomine.org) is, to the best of our knowledge, the first open-source rich internet application to enable highly collaborative and multidisciplinary analysis of multi-gigapixel imaging data.
 
 This bootstrap procedure allows you to configure your installation and generate an installer script based on this configuration. 
-All Cytomine components run in Docker containers so that the only requirement is Docker.
+All Cytomine components run in Docker containers using docker-compose and lauch with Python, so that the only requirements are Docker, Docker-compose and Python.
 
 
 ## Install
 
-**To install *official* release of Cytomine, see @cytomine. Follow this guide to install forked version by ULiege.** 
+**To install this release of Cytomine, follow this guide to install forked version by Eva Scapellato.** 
 
-Follow the detailed guide to install Cytomine:
-* [Install Cytomine on Linux](https://doc.cytomine.be/display/PubOp/Install+Cytomine+on+Linux)
-* [Install Cytomine on MacOS](https://doc.cytomine.be/display/PubOp/Install+Cytomine+on+MacOS)
+1. install Docker-Compose and Python:
+* [install Docker](https://docs.docker.com/compose/install/)
+* [Install Python 3](https://realpython.com/installing-python/)
 
-Basically,
-1. Fill the `configuration.sh` file
-2. Generate your installation script by running `bash init.sh`
-3. Run the generated script `bash start.sh`
 
-To restart the server, run `bash restart.sh`.
+2. Retrieve this version of Cytomine-Bootstrap using the following commands:
+    * `mdkir Cytomine`
+    * `cd Cytomine/`
+    * `git clone https://github.com/EvaScap/Cytomine-bootstrap.git` 
+    * `cd Cytomine-bootstrap`
+    * `git checkout docker-compose`
+    * `pip3 install -r requirements.txt`
+3. generate the Core image working with docker-compose using the following commands:
+    * `mdkir Cytomine`
+    * `cd Cytomine/`
+    * `git clone https://github.com/EvaScap/Cytomine-core.git` 
+    * `cd Cytomine-core`
+    * `git checkout Docker-Compose`
+    * `docker build  -t cytomineuliege/core:dockercompose docker/`
+3. Fill the `configurationBase.yml` file.
+4. to start Cytomine, run: `python3 start.py`
+5. to stop it: `python3 stop.py`
+6. to restart the server, run `python3 restart.py`.
 
 You may be interested in [Cytomine parameter configuration reference](https://doc.cytomine.be/display/PubOp/Cytomine+configuration+reference).
 
