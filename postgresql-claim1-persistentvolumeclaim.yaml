@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  creationTimestamp: null
+  labels:
+    io.kompose.service: postgresql-claim1
+  name: postgresql-claim1
+spec:
+  accessModes:
+  - ReadWriteMany
+  storageClassName: slow
+  resources:
+    requests:
+      storage: 100Mi
+status: {}

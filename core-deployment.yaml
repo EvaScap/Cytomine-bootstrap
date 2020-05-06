@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: core
+  name: core
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: core
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.21.0 (992df58d8)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: core
+        app: core
+    spec:
+      containers:
+      - image: cytomineuliege/core:test123
+        imagePullPolicy: Never
+        name: core
+        resources: {}
+        volumeMounts:
+        - mountPath: /etc/localtime
+          name: core-claim0
+        - mountPath: /usr/share/tomcat7/.grails/cytomineconfig.groovy
+          name: core-claim1
+        - mountPath: /tmp/addHosts.sh
+          name: core-claim2
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes:
+      - name: core-claim0
+        hostPath:
+      # chemin du dossier sur l'hôte
+          path: /etc/localtime
+      - name: core-claim1
+        hostPath:
+      # chemin du dossier sur l'hôte
+          path: /home/escapellato/Cytomine/Cytomine-bootstrap/configs/core/cytomineconfig.groovy
+      # ce champ est optionnel
+      - name: core-claim2
+        hostPath:
+      # chemin du dossier sur l'hôte
+          path: /home/escapellato/Cytomine/Cytomine-bootstrap/hosts/core/addHosts.sh
+      # ce champ est optionnel
+status: {}

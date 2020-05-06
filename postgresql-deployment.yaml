@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgresql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: postgresql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+      labels:
+        io.kompose.service: postgresql
+        app: postgresql
+    spec:
+      containers:
+      - args:
+        - postgres
+        - -c
+        - config_file=/tmp/postgresql.conf
+        env:
+        - name: PGDATA
+          value: /var/lib/postgresql/data/db-files/
+        image: cytomineuliege/postgres:v2.0.0
+        imagePullPolicy: ""
+        name: postgresql
+        resources: {}
+        volumeMounts:
+        - mountPath: /var/lib/postgresql/data
+          name: db-postgres11
+        - mountPath: /tmp
+          name: postgresql-claim1
+        ports:
+        - containerPort: 5432
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes:
+      - name: db-postgres11
+        persistentVolumeClaim:
+          claimName: db-postgres11
+      - name: postgresql-claim1
+        hostPath:
+      # chemin du dossier sur l'hôte
+          path: /home/escapellato/Cytomine/Cytomine-bootstrap/configs/postgresql
+      # ce champ est optionnel
+          type: Directory
+status: {}

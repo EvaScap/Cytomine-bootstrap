@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rabbitmq
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: rabbitmq
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        io.kompose.service: rabbitmq
+        app: rabbitmq
+    spec:
+      containers:
+      - env:
+        - name: RABBITMQ_PASS
+          value: router
+        image: cytomineuliege/rabbitmq:v1.1.2
+        imagePullPolicy: ""
+        name: rabbitmq
+        resources: {}
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes: null
+status: {}

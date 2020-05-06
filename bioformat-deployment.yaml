@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    io.kompose.service: bioformat
+  name: bioformat
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: bioformat
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      
+      labels:
+        io.kompose.service: bioformat
+        app: bioformat
+    spec:
+      containers:
+      - env:
+        - name: BIOFORMAT_PORT
+          value: "4321"
+        image: cytomineuliege/bioformat:v2.1.0
+        imagePullPolicy: ""
+        name: bioformat
+        resources: {}
+        volumeMounts:
+        - mountPath: /data/images
+          name: bioformat-claim0
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes:
+      - name: bioformat-claim0
+        hostPath:
+      # chemin du dossier sur l'hôte
+          path: /data/images
+status: {}

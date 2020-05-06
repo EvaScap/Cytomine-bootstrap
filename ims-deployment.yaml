@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    io.kompose.service: ims
+  name: ims
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: ims
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        io.kompose.service: ims
+        app: ims
+    spec:
+      containers:
+      - env:
+        - name: FAST_DATA_PATH
+          value: /data/images
+        - name: IMS_STORAGE_PATH
+          value: /data/images
+        image: cytomineuliege/ims:v2.0.0-rc.2
+        imagePullPolicy: ""
+        name: ims
+        resources: {}
+        volumeMounts:
+        - mountPath: /tmp/uploaded
+          name: ims-claim0
+        - mountPath: /data/images
+          name: ims-claim1
+        - mountPath: /usr/share/tomcat7/.grails/ims-config.groovy
+          name: ims-claim2
+        - mountPath: /tmp/addHosts.sh
+          name: ims-claim3
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes:
+      - name: ims-claim0
+        hostPath:
+      # chemin du dossier sur l'hôte
+          path: /tmp/uploaded
+      - name: ims-claim1
+        hostPath:
+      # chemin du dossier sur l'hôte
+          path: /data/images
+      - name: ims-claim2
+        hostPath:
+      # chemin du dossier sur l'hôte
+          path: /home/escapellato/Cytomine/Cytomine-bootstrap/configs/ims/ims-config.groovy
+      - name: ims-claim3
+        hostPath:
+      # chemin du dossier sur l'hôte
+          path: /home/escapellato/Cytomine/Cytomine-bootstrap/hosts/ims/addHosts.sh
+status: {}

@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mongodb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: mongodb
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+      labels:
+        io.kompose.service: mongodb
+        app: mongodb
+    spec:
+      containers:
+      - image: cytomineuliege/mongodb:v1.1.2
+        imagePullPolicy: ""
+        name: mongodb
+        resources: {}
+        volumeMounts:
+        - mountPath: /data/db
+          name: db-mongo
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes:
+      - name: db-mongo
+        persistentVolumeClaim:
+          claimName: db-mongo
+status: {}

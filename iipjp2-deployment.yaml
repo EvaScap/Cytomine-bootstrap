@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: iipjp2
+  name: iipjp2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: iipjp2
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.21.0 (992df58d8)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: iipjp2
+        app: iipjp2
+    spec:
+      containers:
+      - env:
+        - name: NB_IIP_PROCESS
+          value: "10"
+        image: cytomineuliege/iip-jp2000:v1.2.0
+        imagePullPolicy: ""
+        name: iipjp2
+        resources: {}
+        securityContext:
+        volumeMounts:
+        - mountPath: /data/images
+          name: iipjp2-claim0
+        - mountPath: /usr/local/nginx/conf/nginx.conf
+          name: iipjp2-claim1
+      restartPolicy: Always
+      volumes:
+      - name: iipjp2-claim0
+        hostPath:
+      # chemin du dossier sur l'hôte
+          path: /data/images
+      - name: iipjp2-claim1
+        hostPath:
+      # chemin du dossier sur l'hôte
+          path: /home/escapellato/Cytomine/Cytomine-bootstrap/configs/iipJP2/nginx.conf
+status: {}

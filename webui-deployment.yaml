@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: webui
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        io.kompose.service: webui
+        app: webui
+    spec:
+      containers:
+      - image: cytomineuliege/web-ui:v1.0.0-rc.2
+        imagePullPolicy: ""
+        name: webui
+        resources: {}
+        volumeMounts:
+        - mountPath: /etc/localtime
+          name: webui-claim0
+        - mountPath: /app/configuration.json
+          name: webui-claim1
+        - mountPath: /etc/nginx/nginx.conf
+          name: webui-claim2
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes:
+      - name: webui-claim0
+        hostPath:
+      # chemin du dossier sur l'hôte
+          path: /etc/localtime
+      # ce champ est optionnel
+      - name: webui-claim1
+        hostPath:
+      # chemin du dossier sur l'hôte
+          path: /home/escapellato/Cytomine/Cytomine-bootstrap/configs/web-ui/configuration.json
+      # ce champ est optionnel
+      - name: webui-claim2
+        hostPath:
+      # chemin du dossier sur l'hôte
+          path: /home/escapellato/Cytomine/Cytomine-bootstrap/configs/web-ui/nginx.conf
+      # ce champ est optionnel
+status: {}
