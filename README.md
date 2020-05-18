@@ -11,7 +11,7 @@
 [Cytomine](http://cytomine.org) is, to the best of our knowledge, the first open-source rich internet application to enable highly collaborative and multidisciplinary analysis of multi-gigapixel imaging data.
 
 This bootstrap procedure allows you to configure your installation and generate an installer script based on this configuration. 
-All Cytomine components run in Docker containers using docker-compose and lauch with Python, so that the only requirements are Docker, Docker-compose and Python.
+All Cytomine components run in kunernetes pods using microk8s and launch with Python, so that the only requirements are Docker, microk8s and Python.
 
 
 ## Install
@@ -21,6 +21,7 @@ All Cytomine components run in Docker containers using docker-compose and lauch 
 1. install Docker-Compose and Python:
 * [install Docker](https://docs.docker.com/compose/install/)
 * [Install Python 3](https://realpython.com/installing-python/)
+* [Install MicroK8s](https://microk8s.io/#get-started)
 
 
 2. Retrieve this version of Cytomine-Bootstrap using the following commands:
@@ -28,7 +29,7 @@ All Cytomine components run in Docker containers using docker-compose and lauch 
     * `cd Cytomine/`
     * `git clone https://github.com/EvaScap/Cytomine-bootstrap.git` 
     * `cd Cytomine-bootstrap`
-    * `git checkout docker-compose`
+    * `git checkout kubernetes`
     * `pip3 install -r requirements.txt`
 3. generate the Core image working with docker-compose using the following commands:
     * `mdkir Cytomine`
