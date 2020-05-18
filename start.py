@@ -1,6 +1,6 @@
 import os  
 import time
-#faire un verife de si le init pas fait --> lle faire (verif des  fichier sans .sample)
+
 
 FILES=[
 'configs/core/cytomineconfig.groovy', 
