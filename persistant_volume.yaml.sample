@@ -7,7 +7,7 @@ spec:
     storage: 200Mi
   accessModes:
     - ReadWriteMany
-  persistentVolumeReclaimPolicy: Retain
+  persistentVolumeReclaimPolicy: Recycle
   storageClassName: slow
   hostPath:
-    path: /home/escapellato/Cytomine/Cytomine-bootstrap/volume/pv2
+    path: ${PWD}/volume/pv1

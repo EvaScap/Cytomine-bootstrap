@@ -24,7 +24,7 @@ spec:
         env:
         - name: PGDATA
           value: /var/lib/postgresql/data/db-files/
-        image: cytomineuliege/postgres:v2.0.0 
+        image: $POSTGRESQL_NAMESPACE/postgres:$POSTGRESQL_VERSION 
         imagePullPolicy: ""
         name: postgresql
         resources: {}
@@ -44,6 +44,6 @@ spec:
       - name: postgresql-claim1
         hostPath:
       # chemin du dossier sur l'hôte
-          path: /home/escapellato/Cytomine/Cytomine-bootstrap/configs/postgresql
+          path: ${PWD}/configs/postgresql
       # ce champ est optionnel
 status: {}

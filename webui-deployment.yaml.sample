@@ -16,7 +16,7 @@ spec:
         app: webui
     spec:
       containers:
-      - image: cytomineuliege/web-ui:v1.0.0-rc.2 
+      - image: $WEB_UI_NAMESPACE/web-ui:$WEB_UI_VERSION 
         imagePullPolicy: ""
         name: webui
         resources: {}
@@ -38,11 +38,11 @@ spec:
       - name: webui-claim1
         hostPath:
       # chemin du dossier sur l'hôte
-          path: /home/escapellato/Cytomine/Cytomine-bootstrap/configs/web-ui/configuration.json
+          path: ${PWD}/configs/web-ui/configuration.json
       # ce champ est optionnel
       - name: webui-claim2
         hostPath:
       # chemin du dossier sur l'hôte
-          path: /home/escapellato/Cytomine/Cytomine-bootstrap/configs/web-ui/nginx.conf
+          path: ${PWD}/configs/web-ui/nginx.conf
       # ce champ est optionnel
 status: {}

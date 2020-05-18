@@ -20,14 +20,14 @@ spec:
       containers:
       - env:
         - name: NB_IIP_PROCESS
-          value: "10"
-        image: cytomineuliege/iip-cyto:v1.5.1
+          value: "$NB_IIP_PROCESS"
+        image: $IIPCYTO_NAMESPACE/iip-cyto:$IIPCYTO_VERSION
         imagePullPolicy: ""
         name: iipcyto
         resources: {}
         securityContext:
         volumeMounts:
-        - mountPath: /data/images
+        - mountPath: $IMS_STORAGE_PATH
           name: iipcyto-claim0
         - mountPath: /usr/local/nginx/conf/nginx.conf
           name: iipcyto-claim1
@@ -37,10 +37,10 @@ spec:
       - name: iipcyto-claim0
         hostPath:
       # chemin du dossier sur l'hôte
-          path: /data/images
+          path: $IMS_STORAGE_PATH
       - name: iipcyto-claim1
         hostPath:
       # chemin du dossier sur l'hôte
-          path: /home/escapellato/Cytomine/Cytomine-bootstrap/configs/iipCyto/nginx.conf
+          path: ${PWD}/configs/iipCyto/nginx.conf
 
 status: {}

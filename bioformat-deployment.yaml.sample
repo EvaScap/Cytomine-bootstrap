@@ -22,12 +22,12 @@ spec:
       - env:
         - name: BIOFORMAT_PORT
           value: "4321"
-        image: cytomineuliege/bioformat:v2.1.0
+        image: $BIOFORMAT_NAMESPACE/bioformat:$BIOFORMAT_VERSION
         imagePullPolicy: ""
         name: bioformat
         resources: {}
         volumeMounts:
-        - mountPath: /data/images
+        - mountPath: $IMS_STORAGE_PATH
           name: bioformat-claim0
       restartPolicy: Always
       serviceAccountName: ""
@@ -35,5 +35,5 @@ spec:
       - name: bioformat-claim0
         hostPath:
       # chemin du dossier sur l'hôte
-          path: /data/images
+          path: $IMS_STORAGE_PATH
 status: {}

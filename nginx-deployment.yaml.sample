@@ -18,7 +18,7 @@ spec:
         app: nginx
     spec:
       containers:
-      - image: cytomineuliege/nginx:v1.4.0
+      - image: $NGINX_NAMESPACE/nginx:$NGINX_VERSION
         imagePullPolicy: ""
         name: nginx
         ports:
@@ -43,31 +43,31 @@ spec:
       - name: nginx-claim0
         hostPath:
       # chemin du dossier sur l'hôte
-          path: /tmp/uploaded
+          path: $IMS_BUFFER_PATH
       # ce champ est optionnel
       - name: nginx-claim1
         hostPath:
       # chemin du dossier sur l'hôte
-          path: /data/certificates
+          path: $CERTIFICATE_PATH
       # ce champ est optionnel
       - name: nginx-claim2
         hostPath:
       # chemin du dossier sur l'hôte
-          path: /home/escapellato/Cytomine/Cytomine-bootstrap/configs/nginx/nginx.conf
+          path: ${PWD}/configs/nginx/nginx.conf
       # ce champ est optionnel
       - name: nginx-claim3
         hostPath:
       # chemin du dossier sur l'hôte
-          path: /home/escapellato/Cytomine/Cytomine-bootstrap/configs/nginx/server-core.conf
+          path: ${PWD}/configs/nginx/server-core.conf
       # ce champ est optionnel
       - name: nginx-claim4
         hostPath:
       # chemin du dossier sur l'hôte
-          path: /home/escapellato/Cytomine/Cytomine-bootstrap/configs/nginx/server-ims.conf
+          path: ${PWD}/configs/nginx/server-ims.conf
       # ce champ est optionnel
       - name: nginx-claim5
         hostPath:
       # chemin du dossier sur l'hôte
-          path: /home/escapellato/Cytomine/Cytomine-bootstrap/configs/nginx/server-iipjp2.conf
+          path: ${PWD}/configs/nginx/server-iipjp2.conf
       # ce champ est optionnel
 status: {}

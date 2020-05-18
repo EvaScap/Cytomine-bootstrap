@@ -1,7 +1,5 @@
 import os  
   
-print('STOP CONTAINERS')
-os.system('docker-compose stop') 
+print('STOP AND REMOVE CONTAINERS')
+os.system('microk8s stop') 
 
-print('RM CONTAINERS')
-os.system('docker-compose rm -f') 

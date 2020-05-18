@@ -20,17 +20,17 @@ spec:
       containers:
       - env:
         - name: FAST_DATA_PATH
-          value: /data/images
+          value: $FAST_DATA_PATH
         - name: IMS_STORAGE_PATH
-          value: /data/images
-        image: cytomineuliege/ims:v2.0.0-rc.2 
+          value: $IMS_STORAGE_PATH
+        image: $IMS_NAMESPACE/ims:$IMS_VERSION 
         imagePullPolicy: ""
         name: ims
         resources: {}
         volumeMounts:
         - mountPath: /tmp/uploaded
           name: ims-claim0
-        - mountPath: /data/images
+        - mountPath: $IMS_STORAGE_PATH
           name: ims-claim1
         - mountPath: /usr/share/tomcat7/.grails/ims-config.groovy
           name: ims-claim2
@@ -42,17 +42,17 @@ spec:
       - name: ims-claim0
         hostPath:
       # chemin du dossier sur l'hôte
-          path: /tmp/uploaded
+          path: $IMS_BUFFER_PATH
       - name: ims-claim1
         hostPath:
       # chemin du dossier sur l'hôte
-          path: /data/images
+          path: $IMS_STORAGE_PATH
       - name: ims-claim2
         hostPath:
       # chemin du dossier sur l'hôte
-          path: /home/escapellato/Cytomine/Cytomine-bootstrap/configs/ims/ims-config.groovy
+          path: ${PWD}/configs/ims/ims-config.groovy
       - name: ims-claim3
         hostPath:
       # chemin du dossier sur l'hôte
-          path: /home/escapellato/Cytomine/Cytomine-bootstrap/hosts/ims/addHosts.sh
+          path: ${PWD}/hosts/ims/addHosts.sh
 status: {}

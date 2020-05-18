@@ -17,8 +17,8 @@ spec:
       containers:
       - env:
         - name: RABBITMQ_PASS
-          value: router
-        image: cytomineuliege/rabbitmq:v1.1.2
+          value: $RABBITMQ_PASSWORD
+        image: $RABBITMQ_NAMESPACE/rabbitmq:$RABBITMQ_VERSION
         imagePullPolicy: ""
         name: rabbitmq
         resources: {}

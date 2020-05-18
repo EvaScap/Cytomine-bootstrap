@@ -26,7 +26,7 @@ spec:
         app: core
     spec:
       containers:
-      - image: cytomineuliege/core:test123
+      - image: $CORE_NAMESPACE/core:$CORE_VERSION
         imagePullPolicy: Never
         name: core
         resources: {}
@@ -47,11 +47,11 @@ spec:
       - name: core-claim1
         hostPath:
       # chemin du dossier sur l'hôte
-          path: /home/escapellato/Cytomine/Cytomine-bootstrap/configs/core/cytomineconfig.groovy
+          path: ${PWD}/configs/core/cytomineconfig.groovy
       # ce champ est optionnel
       - name: core-claim2
         hostPath:
       # chemin du dossier sur l'hôte
-          path: /home/escapellato/Cytomine/Cytomine-bootstrap/hosts/core/addHosts.sh
+          path: ${PWD}/hosts/core/addHosts.sh
       # ce champ est optionnel
 status: {}

@@ -18,7 +18,7 @@ spec:
         app: memcached
     spec:
       containers:
-      - image: cytomineuliege/memcached:v1.1.2
+      - image: $MEMCACHED_NAMESPACE/memcached:$MEMCACHED_VERSION
         imagePullPolicy: ""
         name: memcached
         resources: {}
@@ -31,5 +31,5 @@ spec:
       - name: memcached-claim0
         hostPath:
       # chemin du dossier sur l'hôte
-          path: /home/escapellato/Cytomine/Cytomine-bootstrap/configs/memcached/memcached.conf
+          path: ${PWD}/configs/memcached/memcached.conf
 status: {}

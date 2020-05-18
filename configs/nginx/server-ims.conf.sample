@@ -3,7 +3,7 @@ upstream backend-ims {
 }
 
 upstream backend-iip {
-    server iipCyto:80;
+    server iipcyto:80;
 }
 
 server {

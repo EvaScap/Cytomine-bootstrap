@@ -28,14 +28,14 @@ spec:
       containers:
       - env:
         - name: NB_IIP_PROCESS
-          value: "10"
-        image: cytomineuliege/iip-jp2000:v1.2.0
+          value: "$NB_IIP_PROCESS"
+        image: $IIPJP2_NAMESPACE/iip-jp2000:$IIPJP2_VERSION
         imagePullPolicy: ""
         name: iipjp2
         resources: {}
         securityContext:
         volumeMounts:
-        - mountPath: /data/images
+        - mountPath: $IMS_STORAGE_PATH
           name: iipjp2-claim0
         - mountPath: /usr/local/nginx/conf/nginx.conf
           name: iipjp2-claim1
@@ -44,9 +44,9 @@ spec:
       - name: iipjp2-claim0
         hostPath:
       # chemin du dossier sur l'hôte
-          path: /data/images
+          path: $IMS_STORAGE_PATH
       - name: iipjp2-claim1
         hostPath:
       # chemin du dossier sur l'hôte
-          path: /home/escapellato/Cytomine/Cytomine-bootstrap/configs/iipJP2/nginx.conf
+          path: ${PWD}/configs/iipJP2/nginx.conf
 status: {}
